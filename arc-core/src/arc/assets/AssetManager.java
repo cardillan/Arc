@@ -8,6 +8,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.gl.*;
 import arc.struct.*;
+import arc.struct.ObjectMap.*;
 import arc.util.*;
 
 import java.util.concurrent.*;
@@ -126,6 +127,23 @@ public class AssetManager implements Disposable{
         if(assetsByType != null){
             for(ObjectMap.Entry<String, RefCountedContainer> asset : assetsByType.entries()){
                 out.add((T)asset.value.object);
+            }
+        }
+        return out;
+    }
+
+    /**
+     * @param type the asset type
+     * @return all the assets matching the specified type as entries by file name
+     */
+    public synchronized <T> Seq<Entry<String, T>> getAllEntries(Class<T> type, Seq<Entry<String, T>> out){
+        ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
+        if(assetsByType != null){
+            for(ObjectMap.Entry<String, RefCountedContainer> asset : assetsByType.entries()){
+                Entry<String, T> entry = new Entry<>();
+                entry.key = asset.key;
+                entry.value = (T)asset.value.object;
+                out.add(entry);
             }
         }
         return out;
