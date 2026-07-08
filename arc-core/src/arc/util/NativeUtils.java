@@ -5,6 +5,10 @@ public class NativeUtils{
     /*JNI
 
     #include <stdlib.h>
+    #include <locale.h>
+    #ifndef _WIN32
+        #include <langinfo.h>
+    #endif
 
      */
 
@@ -28,7 +32,7 @@ public class NativeUtils{
 
     /**
      * Wraps getenv. This may differ from System.getenv.
-     * @return the environment variable, the empty string.
+     * @return the environment variable, or the empty string.
      */
     public static native String getEnv(String name); /*
         #ifndef _WIN32
@@ -42,10 +46,43 @@ public class NativeUtils{
         #endif
     */
 
+    /**
+     * Wraps setlocale. Pass LC_ALL for category.
+     * @return the locale actually in effect after the call, or the empty string if the requested locale was rejected (setlocale returned NULL).
+     */
+    public static native String setLocale(int category, String locale); /*
+        #ifndef _WIN32
+            char* result = setlocale(category, locale);
+            if(result == NULL){
+                return env->NewStringUTF("");
+            }
+            return env->NewStringUTF(result);
+        #else
+            return env->NewStringUTF("");
+        #endif
+    */
+
+    /**
+     * Wraps nl_langinfo(CODESET).
+     * @return the current codeset, e.g. "UTF-8", or "ANSI_X3.4-1968" if stuck in the C locale.
+     */
+    public static native String getCodeset(); /*
+        #ifndef _WIN32
+            char* result = nl_langinfo(CODESET);
+            if(result == NULL){
+                return env->NewStringUTF("");
+            }
+            return env->NewStringUTF(result);
+        #else
+            return env->NewStringUTF("");
+        #endif
+    */
+
     /** Fixes LC_ALL and LANG on Steam to avoid issues with Zenity.*/
     public static void forceUtf8Locale(){
         if(OS.isWindows) return;
-        setEnv("LC_ALL", "en_US.UTF-8", true);
-        setEnv("LANG", "en_US.UTF-8", true);
+        setEnv("LC_ALL", "C.UTF-8", true);
+        setEnv("LANG", "C.UTF-8", true);
+        setEnv("LC_CTYPE", "C.UTF-8", true);
     }
 }
