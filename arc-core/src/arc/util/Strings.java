@@ -873,7 +873,7 @@ public class Strings{
         int[] versionNums = sanitizeVersion(version);
         int[] targetNums = sanitizeVersion(target);
         if(versionNums == null || targetNums == null){
-            return version.equals(target);
+            return !version.equals(target);
         }
         for(int i = 0; i < 4; i++){
             if(versionNums[i] != targetNums[i]){
