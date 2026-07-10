@@ -18,7 +18,7 @@ jobs:
       - name: Upload natives
         uses: actions/upload-artifact@v7
         with:
-          name: Arc Linux natives
+          name: Linux natives
           path: |
             arc-core/build/natives
             extensions/filedialogs/build/natives
@@ -44,7 +44,7 @@ jobs:
       - name: Upload arc-core natives
         uses: actions/upload-artifact@v7
         with:
-          name: Arc-core natives
+          name: Windows and Android natives
           path: |
             arc-core/build/natives
             extensions/filedialogs/build/natives
@@ -70,7 +70,7 @@ jobs:
       - name: Upload natives
         uses: actions/upload-artifact@v7
         with:
-          name: Arc-core MacOS natives
+          name: MacOS natives
           path: |
             arc-core/build/natives
             extensions/freetype/build/natives
