@@ -177,6 +177,7 @@ public class ObjectSet<T> implements Iterable<T>, Eachable<T>{
      * the call leaves the set unchanged and returns false.
      */
     public boolean add(T key){
+        if(key == null) return false;
         int i = locateKey(key);
         if(i >= 0) return false; // Existing key was found.
         i = -(i + 1); // Empty space was found.
