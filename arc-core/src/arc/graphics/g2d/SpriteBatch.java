@@ -5,6 +5,7 @@ import arc.graphics.*;
 import arc.graphics.gl.*;
 import arc.math.*;
 import arc.struct.*;
+import arc.util.*;
 
 import java.nio.*;
 import java.util.*;
@@ -29,7 +30,7 @@ public class SpriteBatch extends Batch{
     public static long totalDrawCalls = 0;
 
     static ForkJoinHolder commonPool;
-    boolean multithreaded = Core.app != null && ((Core.app.getVersion() >= 21 && !Core.app.isIOS()) || Core.app.isDesktop());
+    boolean multithreaded = !OS.isIos && !OS.isAndroid;
 
     protected Mesh mesh;
     protected FloatBuffer buffer;
